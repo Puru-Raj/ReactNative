@@ -2,7 +2,6 @@ import React from 'react';
 import {Text,View,StyleSheet,TextInput} from 'react-native';
 import {Ionicons} from '@expo/vector-icons'
 
-
 const SearchBar=({Term,changeText,submit})=>{
     return(
         <View>
@@ -20,6 +19,7 @@ const SearchBar=({Term,changeText,submit})=>{
         </View>
     )
 }
+
 
 const Styles=StyleSheet.create({SeachStyle:{
     flexDirection:'row',
@@ -39,6 +39,7 @@ textinput:{
 });
 
 export default SearchBar;
+
 
 
 

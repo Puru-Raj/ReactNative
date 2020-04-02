@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet} from 'react-native';
+import { Text, View, StyleSheet,ScrollView} from 'react-native';
 import SearchBar from '../components/SearchBar'
 import Yelp from "../api/yelp"
 import ResultList from "../components/ResultList"
 
-const SearchScreen = () => {
-
+const SearchScreen = ({navigation}) => {
     const [Term, setTerm] = useState("")
     const [result, setResult] = useState([])
     const [errMessage, seterrMessage] = useState('')
@@ -15,7 +14,7 @@ const SearchScreen = () => {
                 params: {
                     limit: 50,
                     term: Term,
-                    location: 'deactur alabama'
+                    location: 'New York',
                 }
             })
             setResult(response.data.businesses)
@@ -26,22 +25,25 @@ const SearchScreen = () => {
     }
 
     useEffect(()=>{
-        api('Waffle House')
+        api('pizza')
     },[])
 
-    // console.log(result)
+
+    const filterbyResults=(price)=>{
+        return(
+            result.filter((result)=>{return result.price===price})
+        )
+    }
+
     return (
-        <View>
-            <SearchBar term={Term} submit={api} changeText={setTerm} />
-
-            <Text style={{ textAlign: 'center' }}>
-                {errMessage && !(result.length > 0) ? <Text style={Styles.text}>{errMessage}</Text> : <Text style={Styles.text1}>We have found {result.length} results</Text>}{"\n"}
-            </Text>
-
-            <ResultList  header="Cost Effective" />
-            <ResultList  header="Bit Pricer" />
-            <ResultList  header="Big Spender !" />
-        </View>
+        <> 
+            <SearchBar term={Term} submit={api} changeText={setTerm}/>
+            <ScrollView><ResultList  header="Cost Effective" filteredResults={filterbyResults('$')} />
+            <ResultList navigation={navigation} filteredResults={filterbyResults('$$')} header="Bit Pricer" />
+            <ResultList navigation={navigation} filteredResults={filterbyResults('$$$')} header="Big Spender !" />
+            <ResultList navigation={navigation} filteredResults={filterbyResults('$$$$')} header="24K Magic !!" /></ScrollView>
+            
+        </>
     )
 }
 
